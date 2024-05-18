@@ -1,1 +1,0 @@
--- ALTER TABLE Teachers ADD COLUMN gender TEXT;
