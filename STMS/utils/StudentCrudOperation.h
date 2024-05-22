@@ -1,17 +1,19 @@
 #ifndef STUDENTCRUDOPERATION_H
 #define STUDENTCRUDOPERATION_H
 
+#include "../../library/sqlite3.h"
 #include "DatabaseCrudOperation.h"
-#include <sqlite3.h>
+#include "Student.h"
+// #include <sqlite3.h>
 #include <string>
 
-class StudentCrudOperation : public DatabaseCrudOperation {
+class StudentCrudOperation : public DatabaseCrudOperation<Student> {
 public:
   StudentCrudOperation(const std::string &dbPath);
   ~StudentCrudOperation();
 
-  void insert(const std::string &data) override;
-  void update(int id, const std::string &data) override;
+  void insert(Student &data) override;
+  void update(int id, Student &data) override;
   void remove(int id) override;
   std::string read(int id) const override;
 

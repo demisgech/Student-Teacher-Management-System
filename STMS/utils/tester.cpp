@@ -5,27 +5,33 @@
 #include <memory>
 #include <stdexcept>
 
+using namespace std;
+
 int main() {
   try {
-    std::unique_ptr<DatabaseCrudOperation> studentOps =
-        std::make_unique<StudentCrudOperation>("school.db");
-    std::unique_ptr<DatabaseCrudOperation> teacherOps =
-        std::make_unique<TeacherCrudOperation>("school.db");
+    unique_ptr<DatabaseCrudOperation<Student>> studentOps =
+        make_unique<StudentCrudOperation>("School.db");
+
+    unique_ptr<DatabaseCrudOperation<Teacher>> teacherOps =
+        make_unique<TeacherCrudOperation>("School.db");
 
     // Perform CRUD operations
-    studentOps->insert("John Doe");
-    teacherOps->insert("Jane Smith");
+    Student student;
+    studentOps->insert(student);
 
-    studentOps->update(1, "Updated John Doe");
-    teacherOps->update(1, "Updated Jane Smith");
+    Teacher teacher;
+    teacherOps->insert(teacher);
 
-    std::cout << studentOps->read(1) << std::endl;
-    std::cout << teacherOps->read(1) << std::endl;
+    studentOps->update(1, student);
+    teacherOps->update(1, teacher);
+
+    cout << studentOps->read(1) << endl;
+    cout << teacherOps->read(1) << endl;
 
     studentOps->remove(1);
     teacherOps->remove(1);
-  } catch (const std::exception &ex) {
-    std::cout << ex.what() << std::endl;
+  } catch (const exception &ex) {
+    cout << ex.what() << endl;
   }
   return 0;
 }

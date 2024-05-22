@@ -14,6 +14,7 @@ CREATE TABLE Teachers (
     phoneNumber TEXT,
     email TEXT,
     age INTEGER,
+    gender TEXT,
     resume REAL NOT NULL,
     subject TEXT NOT NULL
 );

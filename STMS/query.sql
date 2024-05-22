@@ -9,4 +9,6 @@
 -- INSERT INTO Users (username, password, role) VALUES ('admin', 'admin', 'Admin');
 -- INSERT INTO Users (username, password, role) VALUES ('guest', 'guest', 'Guest');
 
-SELECT * FROM Users;
+-- SELECT * FROM Users;
+
+ALTER TABLE Teachers ADD COLUMN gender TEXT;

@@ -3,6 +3,7 @@
 class Teacher : public Person {
 private:
   double resume;
+  string subject;
 
 public:
   // Base class constructor inheritance
@@ -16,6 +17,9 @@ public:
 
   void setResume(double resume);
   double getResume() const;
+
+  void setSubject(string resume);
+  string getSubject() const;
 
   ~Teacher();
 };

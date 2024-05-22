@@ -7,6 +7,7 @@ using namespace std;
 
 class Person {
 public:
+  Person() = default;
   Person(const string &name, const string &phoneNumber, const string &email,
          const string &gender, int age);
   Person(const string &name, const string &phoneNumber, const string &email,
@@ -27,6 +28,8 @@ public:
   string getPhoneNumber() const;
   string getEmail() const;
   string getGender() const;
+
+  virtual ~Person() = default;
 
 protected:
   int id;

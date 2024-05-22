@@ -1,55 +1,88 @@
 #include "StudentCrudOperation.h"
+#include "../../library/sqlite3.h"
 #include <iostream>
+#include <sqlite3.h>
 #include <stdexcept>
+using namespace std;
 
-StudentCrudOperation::StudentCrudOperation(const std::string &dbPath) {
+StudentCrudOperation::StudentCrudOperation(const string &dbPath) {
   if (sqlite3_open(dbPath.c_str(), &db)) {
-    throw std::runtime_error("Can't open database: " +
-                             std::string(sqlite3_errmsg(db)));
+    throw runtime_error("Can't open database: " + string(sqlite3_errmsg(db)));
   }
 }
 
 StudentCrudOperation::~StudentCrudOperation() { sqlite3_close(db); }
 
-void StudentCrudOperation::executeSQL(const std::string &sql) const {
+void StudentCrudOperation::executeSQL(const string &sql) const {
   char *errMsg = nullptr;
   if (sqlite3_exec(db, sql.c_str(), nullptr, nullptr, &errMsg) != SQLITE_OK) {
-    std::string error = "SQL error: " + std::string(errMsg);
+    string error = "SQL error: " + string(errMsg);
     sqlite3_free(errMsg);
-    throw std::runtime_error(error);
+    throw runtime_error(error);
   }
 }
 
-void StudentCrudOperation::insert(const std::string &data) {
-  std::string sql = "INSERT INTO students (name) VALUES ('" + data + "');";
+void StudentCrudOperation::insert(Student &data) {
+  cout << "Please, enter your info. carefully!" << endl;
+  cout << "name:";
+  string name;
+  getline(cin, name);
+  data.setName(name);
+
+  cout << "phoneNumber:";
+  string phoneNumber;
+  getline(cin, phoneNumber);
+  data.setPhoneNumber(phoneNumber);
+
+  cout << "Email:";
+  string email;
+  getline(cin, email);
+  data.setEmail(email);
+
+  cout << "age:";
+  int age;
+  cin >> age;
+  data.setAge(age);
+
+  cout << "resume:";
+  double cgpa;
+  cin >> cgpa;
+  data.setCGPA(cgpa);
+
+  string sql = "INSERT INTO Students "
+               "(name,phoneNumber,email,age,cgpa) VALUES (" +
+               data.getName() + data.getPhoneNumber() + data.getEmail() +
+               to_string(data.getAge()) + to_string(data.getCGPA()) + ");";
   executeSQL(sql);
-  std::cout << "Inserting student data: " << data << std::endl;
+  cout << "Data Successfully Inserted!!!" << endl;
 }
 
-void StudentCrudOperation::update(int id, const std::string &data) {
-  std::string sql = "UPDATE students SET name = '" + data +
-                    "' WHERE id = " + std::to_string(id) + ";";
+void StudentCrudOperation::update(int id, Student &data) {
+  // You can update anything and everything ...
+  cout << "Update your name ..." << endl << "New Name:";
+  string name;
+  getline(cin, name);
+  data.setName(name);
+  string sql = "UPDATE Students SET name = " + data.getName() +
+               " WHERE id = " + to_string(id) + ";";
   executeSQL(sql);
-  std::cout << "Updating student with ID " << id << " with data: " << data
-            << std::endl;
+  cout << "Data Successfuly Updated!!!" << endl;
 }
 
 void StudentCrudOperation::remove(int id) {
-  std::string sql =
-      "DELETE FROM students WHERE id = " + std::to_string(id) + ";";
+  string sql = "DELETE FROM Students WHERE id = " + to_string(id) + ";";
   executeSQL(sql);
-  std::cout << "Removing student with ID " << id << std::endl;
+  cout << "Record successfully deleted!!!" << endl;
 }
 
-std::string StudentCrudOperation::read(int id) const {
-  std::string sql =
-      "SELECT name FROM students WHERE id = " + std::to_string(id) + ";";
+string StudentCrudOperation::read(int id) const {
+  string sql = "SELECT name FROM students WHERE id = " + to_string(id) + ";";
   sqlite3_stmt *stmt;
-  std::string result;
+  string result;
 
   if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
-    throw std::runtime_error("Failed to prepare statement: " +
-                             std::string(sqlite3_errmsg(db)));
+    throw runtime_error("Failed to prepare statement: " +
+                        string(sqlite3_errmsg(db)));
   }
 
   if (sqlite3_step(stmt) == SQLITE_ROW) {
@@ -58,6 +91,6 @@ std::string StudentCrudOperation::read(int id) const {
 
   sqlite3_finalize(stmt);
 
-  std::cout << "Reading student with ID " << id << std::endl;
+  cout << "Reading student with ID " << id << endl;
   return result.empty() ? "No data found" : result;
 }

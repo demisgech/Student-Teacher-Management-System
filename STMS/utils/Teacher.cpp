@@ -15,3 +15,7 @@ Teacher::~Teacher() {}
 void Teacher::setResume(double resume) { this->resume = resume; }
 
 double Teacher::getResume() const { return resume; }
+
+void Teacher::setSubject(string subject) { this->subject = subject; }
+
+string Teacher::getSubject() const { return subject; }
