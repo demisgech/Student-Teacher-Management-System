@@ -1,1 +1,1 @@
-# CPlusPlus-with-SQL-database
+# C++ with SQLite3 database
