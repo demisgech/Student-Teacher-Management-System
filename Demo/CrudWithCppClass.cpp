@@ -24,7 +24,7 @@ public:
   }
 
   bool createTable() {
-    const char *sql_create_table = "CREATE TABLE COMPANY("
+    const char *sql_create_table = "CREATE TABLE IF NOT EXISTS COMPANY("
                                    "ID INT PRIMARY KEY     NOT NULL,"
                                    "NAME           TEXT    NOT NULL,"
                                    "AGE            INT     NOT NULL,"
@@ -85,8 +85,8 @@ int main() {
   }
 
   for (int i = 1; i <= 10; ++i) {
-    if (!sqlite.insertRecord(i, ("Name " + std::to_string(i)).c_str(), 20 + i,
-                             ("Address " + std::to_string(i)).c_str(),
+    if (!sqlite.insertRecord(i + 10, ("Name " + std::to_string(i)).c_str(),
+                             20 + i, ("Address " + std::to_string(i)).c_str(),
                              2000.00)) {
       return 1;
     }

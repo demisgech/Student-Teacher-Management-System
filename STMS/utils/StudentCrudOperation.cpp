@@ -1,9 +1,25 @@
 #include "StudentCrudOperation.h"
-#include "../../library/sqlite3.h"
 #include <iostream>
 #include <sqlite3.h>
 #include <stdexcept>
 using namespace std;
+
+static int callback(void *data, int argc, char **argv, char **azColName) {
+  static bool headersPrinted = false;
+  if (!headersPrinted) {
+    for (int i = 0; i < argc; i++) {
+      std::cout << azColName[i] << "\t";
+    }
+    std::cout << std::endl;
+    headersPrinted = true;
+  }
+
+  for (int i = 0; i < argc; i++) {
+    std::cout << (argv[i] ? argv[i] : "NULL") << "\t";
+  }
+  std::cout << std::endl;
+  return 0;
+}
 
 StudentCrudOperation::StudentCrudOperation(const string &dbPath) {
   if (sqlite3_open(dbPath.c_str(), &db)) {
@@ -15,7 +31,7 @@ StudentCrudOperation::~StudentCrudOperation() { sqlite3_close(db); }
 
 void StudentCrudOperation::executeSQL(const string &sql) const {
   char *errMsg = nullptr;
-  if (sqlite3_exec(db, sql.c_str(), nullptr, nullptr, &errMsg) != SQLITE_OK) {
+  if (sqlite3_exec(db, sql.c_str(), callback, nullptr, &errMsg) != SQLITE_OK) {
     string error = "SQL error: " + string(errMsg);
     sqlite3_free(errMsg);
     throw runtime_error(error);
@@ -44,15 +60,16 @@ void StudentCrudOperation::insert(Student &data) {
   cin >> age;
   data.setAge(age);
 
-  cout << "resume:";
+  cout << "CGPA:";
   double cgpa;
   cin >> cgpa;
   data.setCGPA(cgpa);
 
-  string sql = "INSERT INTO Students "
-               "(name,phoneNumber,email,age,cgpa) VALUES (" +
-               data.getName() + data.getPhoneNumber() + data.getEmail() +
-               to_string(data.getAge()) + to_string(data.getCGPA()) + ");";
+  string sql = "INSERT INTO Students"
+               "(name,phoneNumber,email,age,cgpa) VALUES ('" +
+               data.getName() + "','" + data.getPhoneNumber() + "','" +
+               data.getEmail() + "','" + to_string(data.getAge()) + "','" +
+               to_string(data.getCGPA()) + "');";
   executeSQL(sql);
   cout << "Data Successfully Inserted!!!" << endl;
 }
@@ -75,22 +92,21 @@ void StudentCrudOperation::remove(int id) {
   cout << "Record successfully deleted!!!" << endl;
 }
 
-string StudentCrudOperation::read(int id) const {
-  string sql = "SELECT name FROM students WHERE id = " + to_string(id) + ";";
-  sqlite3_stmt *stmt;
-  string result;
+void StudentCrudOperation::read(int id) const {
+  string sql = "SELECT * FROM Students WHERE id = " + to_string(id) + ";";
+  executeSQL(sql);
+}
 
-  if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
-    throw runtime_error("Failed to prepare statement: " +
-                        string(sqlite3_errmsg(db)));
-  }
+void StudentCrudOperation::readAll() {
+  string sql = "SELECT * FROM Students";
+  executeSQL(sql);
+}
 
-  if (sqlite3_step(stmt) == SQLITE_ROW) {
-    result = reinterpret_cast<const char *>(sqlite3_column_text(stmt, 0));
-  }
-
-  sqlite3_finalize(stmt);
-
-  cout << "Reading student with ID " << id << endl;
-  return result.empty() ? "No data found" : result;
+void StudentCrudOperation::createTable() {
+  const char *sql_create_table =
+      "CREATE TABLE IF NOT EXISTS Students ( id INTEGER PRIMARY KEY "
+      "AUTOINCREMENT,name TEXT "
+      "NOT NULL, age INTEGER, phoneNumber TEXT,email TEXT gender TEXT,cgpa "
+      "REAL NOT NULL);";
+  return executeSQL(sql_create_table);
 }

@@ -1,7 +1,6 @@
 #ifndef TEACHERCRUDOPERATION_H
 #define TEACHERCRUDOPERATION_H
 
-#include "../../library/sqlite3.h"
 #include "DatabaseCrudOperation.h"
 #include "Teacher.h"
 #include <sqlite3.h>
@@ -17,7 +16,9 @@ public:
   void insert(Teacher &data) override;
   void update(int id, Teacher &data) override;
   void remove(int id) override;
-  string read(int id) const override;
+  void read(int id) const override;
+  void createTable() override;
+  void readAll() override;
 
 private:
   sqlite3 *db;

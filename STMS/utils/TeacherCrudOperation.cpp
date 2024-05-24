@@ -1,5 +1,4 @@
 #include "TeacherCrudOperation.h"
-#include "../../library/sqlite3.h"
 #include <iostream>
 #include <sqlite3.h>
 #include <stdexcept>
@@ -24,8 +23,10 @@ void TeacherCrudOperation::executeSQL(const string &sql) const {
 }
 
 void TeacherCrudOperation::insert(Teacher &data) {
-  cout << "Please, enter your info. carefully!" << endl;
-  cout << "name:";
+
+  cout << "**** Teachers registration *** \nPlease, enter your info. carefully!"
+       << endl;
+  cout << "name: ";
   string name;
   getline(cin, name);
   data.setName(name);
@@ -35,31 +36,31 @@ void TeacherCrudOperation::insert(Teacher &data) {
   getline(cin, phoneNumber);
   data.setPhoneNumber(phoneNumber);
 
-  cout << "Email:";
+  cout << "Email: ";
   string email;
   getline(cin, email);
   data.setEmail(email);
 
-  cout << "age:";
+  cout << "age: ";
   int age;
   cin >> age;
   data.setAge(age);
 
-  cout << "resume:";
+  cout << "resume: ";
   double resume;
   cin >> resume;
   data.setResume(resume);
 
-  cout << "Subject:";
+  cout << "Subject: ";
   string subject;
   getline(cin, subject);
   data.setSubject(subject);
 
-  string sql = "INSERT INTO Teachers "
-               "(name,phoneNumber,email,age,resume,subject) VALUES (" +
-               data.getName() + data.getPhoneNumber() + data.getEmail() +
-               to_string(data.getAge()) + to_string(data.getResume()) +
-               data.getSubject() + ");";
+  string sql = "INSERT INTO Teachers"
+               "(name,phoneNumber,email,age,resume,Subject) VALUES ('" +
+               data.getName() + "','" + data.getPhoneNumber() + "','" +
+               data.getEmail() + "','" + to_string(data.getAge()) + "','" +
+               to_string(data.getResume()) + "','" + data.getSubject() + "');";
   executeSQL(sql);
   cout << "Data Successfully Inserted!!!" << endl;
 }
@@ -70,7 +71,7 @@ void TeacherCrudOperation::update(int id, Teacher &data) {
   string name;
   getline(cin, name);
   data.setName(name);
-  string sql = "UPDATE Teachers SET name = " + data.getName() +
+  string sql = "UPDATE Teachers SET name = '" + data.getName() + "'" +
                " WHERE id = " + to_string(id) + ";";
   executeSQL(sql);
   cout << "Data Successfuly Updated!!!" << endl;
@@ -82,24 +83,20 @@ void TeacherCrudOperation::remove(int id) {
   cout << "Record successfully deleted!!!" << endl;
 }
 
-string TeacherCrudOperation::read(int id) const {
-  string sql =
-      "SELECT name,email,subject FROM Teachers WHERE id = " + to_string(id) +
-      ";";
-  sqlite3_stmt *stmt;
-  string result;
+void TeacherCrudOperation::read(int id) const {
+  string sql = "SELECT * FROM Teachers WHERE id = " + to_string(id) + ";";
+  executeSQL(sql);
+}
+void TeacherCrudOperation::readAll() {
+  string sql = "SELECT * FROM Teahers";
+  executeSQL(sql);
+}
 
-  if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
-    throw runtime_error("Failed to prepare statement: " +
-                        string(sqlite3_errmsg(db)));
-  }
-
-  if (sqlite3_step(stmt) == SQLITE_ROW) {
-    result = reinterpret_cast<const char *>(sqlite3_column_text(stmt, 0));
-  }
-
-  sqlite3_finalize(stmt);
-
-  cout << "Fetching data ..." << endl;
-  return result.empty() ? "No data found" : result;
+void TeacherCrudOperation::createTable() {
+  const char *sql_create_table =
+      "CREATE TABLE IF NOT EXISTS Teachers ( id INTEGER PRIMARY KEY "
+      "AUTOINCREMENT,name TEXT "
+      "NOT NULL, age INTEGER, phoneNumber TEXT,email TEXT gender TEXT,resume "
+      "REAL NOT NULL,Subject TEXT NOT NULL);";
+  return executeSQL(sql_create_table);
 }
