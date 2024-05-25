@@ -68,7 +68,7 @@ void UserCrudOperation::insert(User &data) {
                data.getUsername() + "','" + data.getPassword() + "','" +
                data.getRole() + "');";
   executeSQL(sql);
-  cout << "Data Successfully Inserted!!!" << endl;
+  cout << "Account successfully created!!!" << endl;
 }
 
 void UserCrudOperation::update(int id, User &data) {

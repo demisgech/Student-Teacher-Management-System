@@ -1,8 +1,9 @@
+#include "Attendance.cpp"
+#include "GradePointAverage.cpp"
 #include "StudentCrudOperation.h"
 #include "TeacherCrudOperation.h"
 #include "UserCrudOperation.h"
 #include "authenticateUser.cpp"
-#include <cctype>
 #include <iostream>
 #include <memory>
 #include <stdexcept>
@@ -19,6 +20,7 @@ void handleOperation() {
 
     unique_ptr<DatabaseCrudOperation<User>> userOps =
         make_unique<UserCrudOperation>("Schools.db");
+
     Student student;
     Teacher teacher;
     User user;
@@ -26,6 +28,14 @@ void handleOperation() {
     studentOps->createTable();
     teacherOps->createTable();
     userOps->createTable();
+
+    AttendanceOperation attendanceOps;
+    attendanceOps.openDatabase("Schools.db");
+    attendanceOps.createTable();
+
+    GradePointAverageOperation gradePointAverageOps;
+    gradePointAverageOps.openDatabase("Schools.db");
+    gradePointAverageOps.createTable();
 
     cout << "******@@@@@@@@@@@@@@@@@******" << endl
          << "*                           *" << endl
@@ -44,8 +54,14 @@ void handleOperation() {
       break;
     case 2: {
       sqlite3 *db;
-      sqlite3_open("school.db", &db);
       string username, password;
+      int rc;
+      // Open the database connection
+      rc = sqlite3_open("Schools.db", &db);
+      if (rc) {
+        cerr << "Can't open database: " << sqlite3_errmsg(db) << endl;
+        return;
+      }
 
       cout << "Username: ";
       cin >> username;
@@ -61,100 +77,154 @@ void handleOperation() {
 
       if (role == "Admin") {
         std::cout << "Logged in successfully as: " << role << std::endl;
-        cout << "1. Register" << endl
-             << "2. View" << endl
-             << "3. Update" << endl
-             << "4. Search" << endl
-             << "5. Delete" << endl
-             << "6. Logout" << endl
+        cout << "1. Manage User" << endl
+             << "2. Take Attendance" << endl
+             << "3. Manage Student GPA" << endl
+             << "4. Logout" << endl
              << "Choice: ";
-        int adminChoice;
-        switch (adminChoice) {
-        case 1: {
-          cout << "1. Student" << endl << "2. Teacher" << endl << "Choice: ";
-          int userResponse;
-          cin >> userResponse;
-          if (userResponse == 1)
-            studentOps->insert(student);
-          else if (userResponse == 2)
-            teacherOps->insert(teacher);
+        int manageTask;
+        cin >> manageTask;
+        if (manageTask == 1) {
+          cout << "1. Register" << endl
+               << "2. View" << endl
+               << "3. Update" << endl
+               << "4. Search" << endl
+               << "5. Delete" << endl
+               << "6. Logout" << endl
+               << "Choice: ";
+          int adminChoice;
+          cin >> adminChoice;
+          switch (adminChoice) {
+          case 1: {
+            cout << "1. Student" << endl << "2. Teacher" << endl << "Choice: ";
+            int userResponse;
+            cin >> userResponse;
+            if (userResponse == 1)
+              studentOps->insert(student);
+            else if (userResponse == 2)
+              teacherOps->insert(teacher);
+            else
+              cout << "Invalid choice!!! Please, try again!!" << endl;
+            break;
+          }
+          case 2: {
+            cout << "1. Student" << endl << "2. Teacher" << endl << "choice: ";
+            int userResponse;
+            cin >> userResponse;
+            if (userResponse == 1)
+              studentOps->readAll();
+            else if (userResponse == 2)
+              teacherOps->readAll();
+            else
+              cout << "Invalid choice!!! Please, try again!!" << endl;
+            break;
+          }
+          case 3: {
+            cout << "1. Student" << endl << "2. Teacher" << endl << "choice: ";
+            int userResponse;
+            cin >> userResponse;
+            if (userResponse == 1) {
+              int id;
+              cout << "Id: ";
+              cin >> id;
+              studentOps->update(id, student);
+            } else if (userResponse == 2) {
+              int id;
+              cout << "Id: ";
+              cin >> id;
+              teacherOps->update(id, teacher);
+            } else
+              cout << "Invalid choice!!! Please, try again!!" << endl;
+            break;
+          }
+          case 4: {
+            cout << "1. Student" << endl << "2. Teacher" << endl << "choice: ";
+            int userResponse;
+            cin >> userResponse;
+            if (userResponse == 1) {
+              int id;
+              cout << "Id: ";
+              cin >> id;
+              studentOps->read(id);
+            } else if (userResponse == 2) {
+              int id;
+              cout << "Id: ";
+              cin >> id;
+              teacherOps->read(id);
+            } else
+              cout << "Invalid choice!!! Please, try again!!" << endl;
+            break;
+          }
+          case 5: {
+            cout << "1. Student" << endl << "2. Teacher" << endl << "choice: ";
+            int userResponse;
+            cin >> userResponse;
+            if (userResponse == 1) {
+              int id;
+              cout << "Id: ";
+              cin >> id;
+              studentOps->remove(id);
+            } else if (userResponse == 2) {
+              int id;
+              cout << "Id: ";
+              cin >> id;
+              teacherOps->remove(id);
+            } else
+              cout << "Invalid choice!!! Please, try again!!" << endl;
+            break;
+          }
+          case 6: {
+            cout << "Logged out!!!" << endl;
+            exit(0);
+          }
+          default:
+            cout << "Invalid choice!!! Please, try again!!" << endl;
+            break;
+          }
+        } else if (manageTask == 2) {
+          Attendance studAttendance;
+          cout << "Insert record" << endl
+               << "View record" << endl
+               << "Choice: ";
+          int attendanceTackerchoice;
+          cin >> attendanceTackerchoice;
+          if (attendanceTackerchoice == 1) {
+            cout << "How many student would u like to record? : ";
+            int n;
+            cin >> n;
+
+            for (int i = 0; i < n; i++) {
+              attendanceOps.insertRecord(studAttendance);
+            }
+          } else if (attendanceTackerchoice == 2)
+            attendanceOps.selectAllRecords();
           else
-            cout << "Invalid choice!!! Please, try again!!" << endl;
-          break;
-        }
-        case 2: {
-          cout << "1. Student" << endl << "2. Teacher" << endl << "choice: ";
-          int userResponse;
-          cin >> userResponse;
-          if (userResponse == 1)
-            studentOps->readAll();
-          else if (userResponse == 2)
-            teacherOps->readAll();
+            cout << "Invalid choice!!!! Please, try again!!!" << endl;
+        } else if (manageTask == 3) {
+          // Manage Grade
+          GradePointAverage studGradePointAverage;
+          cout << "Insert record" << endl
+               << "View record" << endl
+               << "Choice: ";
+          int gpaTakerChoice;
+          cin >> gpaTakerChoice;
+          if (gpaTakerChoice == 1) {
+            cout << "How many student would u like to record? : ";
+            int n;
+            cin >> n;
+
+            for (int i = 0; i < n; i++) {
+              gradePointAverageOps.insertRecord(studGradePointAverage);
+            }
+          } else if (gpaTakerChoice == 2)
+            gradePointAverageOps.selectAllRecords();
           else
-            cout << "Invalid choice!!! Please, try again!!" << endl;
-          break;
-        }
-        case 3: {
-          cout << "1. Student" << endl << "2. Teacher" << endl << "choice: ";
-          int userResponse;
-          cin >> userResponse;
-          if (userResponse == 1) {
-            int id;
-            cout << "Id: ";
-            cin >> id;
-            studentOps->update(id, student);
-          } else if (userResponse == 2) {
-            int id;
-            cout << "Id: ";
-            cin >> id;
-            teacherOps->update(id, teacher);
-          } else
-            cout << "Invalid choice!!! Please, try again!!" << endl;
-          break;
-        }
-        case 4: {
-          cout << "1. Student" << endl << "2. Teacher" << endl << "choice: ";
-          int userResponse;
-          if (userResponse == 1) {
-            int id;
-            cout << "Id: ";
-            cin >> id;
-            studentOps->read(id);
-          } else if (userResponse == 2) {
-            int id;
-            cout << "Id: ";
-            cin >> id;
-            teacherOps->read(id);
-          } else
-            cout << "Invalid choice!!! Please, try again!!" << endl;
-          break;
-        }
-        case 5: {
-          cout << "1. Student" << endl << "2. Teacher" << endl << "choice: ";
-          int userResponse;
-          cin >> userResponse;
-          if (userResponse == 1) {
-            int id;
-            cout << "Id: ";
-            cin >> id;
-            studentOps->remove(id);
-          } else if (userResponse == 2) {
-            int id;
-            cout << "Id: ";
-            cin >> id;
-            teacherOps->remove(id);
-          } else
-            cout << "Invalid choice!!! Please, try again!!" << endl;
-          break;
-        }
-        case 6: {
-          cout << "Logged out!!!" << endl;
+            cout << "Invalid choice!!!! Please, try again!!!" << endl;
+        } else if (manageTask == 4) {
+          cout << "Successfully logged out!!!" << endl;
           exit(0);
-        }
-        default:
-          cout << "Invalid choice!!! Please, try again!!" << endl;
-          break;
-        }
+        } else
+          cout << "Invalide choice!!! Please, try again!!!" << endl;
       } else if (role == "Guest") {
         std::cout << "Logged in successfully as: " << role << std::endl;
         cout << "1. View" << endl
