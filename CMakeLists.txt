@@ -11,6 +11,8 @@ add_executable(excute tester.cpp
 STMS/utils/StudentCrudOperation.cpp
 STMS/utils/TeacherCrudOperation.cpp 
 STMS/utils/UserCrudOperation.cpp 
+STMS/utils/Attendance.cpp
+STMS/utils/GradePointAverage.cpp
 STMS/utils/Teacher.cpp 
 STMS/utils/Student.cpp 
 STMS/utils/Person.cpp 

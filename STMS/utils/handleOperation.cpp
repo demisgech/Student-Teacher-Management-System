@@ -1,5 +1,5 @@
-#include "Attendance.cpp"
-#include "GradePointAverage.cpp"
+#include "Attendance.hpp"
+#include "GradePointAverage.hpp"
 #include "StudentCrudOperation.h"
 #include "TeacherCrudOperation.h"
 #include "UserCrudOperation.h"
@@ -55,12 +55,10 @@ void handleOperation() {
     case 2: {
       sqlite3 *db;
       string username, password;
-      int rc;
-      // Open the database connection
-      rc = sqlite3_open("Schools.db", &db);
-      if (rc) {
-        cerr << "Can't open database: " << sqlite3_errmsg(db) << endl;
-        return;
+
+      if (sqlite3_open("Schools.db", &db)) {
+        throw runtime_error("Can't open database: " +
+                            string(sqlite3_errmsg(db)));
       }
 
       cout << "Username: ";
@@ -183,8 +181,8 @@ void handleOperation() {
           }
         } else if (manageTask == 2) {
           Attendance studAttendance;
-          cout << "Insert record" << endl
-               << "View record" << endl
+          cout << "1. Insert record" << endl
+               << "2. View record" << endl
                << "Choice: ";
           int attendanceTackerchoice;
           cin >> attendanceTackerchoice;
@@ -203,8 +201,8 @@ void handleOperation() {
         } else if (manageTask == 3) {
           // Manage Grade
           GradePointAverage studGradePointAverage;
-          cout << "Insert record" << endl
-               << "View record" << endl
+          cout << "1. Insert record" << endl
+               << "2. View record" << endl
                << "Choice: ";
           int gpaTakerChoice;
           cin >> gpaTakerChoice;
