@@ -3,6 +3,7 @@
 #include <sqlite3.h>
 
 class UserCrudOperation : public DatabaseCrudOperation<User> {
+public:
   UserCrudOperation(const string &dbPath);
   ~UserCrudOperation();
 

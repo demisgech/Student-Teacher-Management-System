@@ -10,9 +10,12 @@ set(CMAKE_CXX_STANDARD 20)
 add_executable(excute tester.cpp
 STMS/utils/StudentCrudOperation.cpp
 STMS/utils/TeacherCrudOperation.cpp 
+STMS/utils/UserCrudOperation.cpp 
 STMS/utils/Teacher.cpp 
 STMS/utils/Student.cpp 
 STMS/utils/Person.cpp 
+STMS/utils/User.cpp 
+
 source/sqlite3.h)
 
 target_link_libraries(excute PRIVATE sqlite3)

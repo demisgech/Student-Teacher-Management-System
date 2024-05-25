@@ -1,0 +1,33 @@
+ /*
+    1. signup
+
+    2. login
+        AS 1. admin
+                1. delete
+                    1. students
+                    2. teachers
+                2. update
+                    1. students
+                    2. teachers
+                3. read
+                    1. students
+                    2. teachers
+                4. search
+                    1. students
+                    2. teachers
+                5. insert
+                    1. students
+                    2. teachers
+                6. logout
+        AS 2. Guest
+                1. read
+                    1. students
+                    2. teachers
+                2. search
+                    1. students
+                    2. teachers
+                3. update
+                    1. user
+                4. logout
+
+    */

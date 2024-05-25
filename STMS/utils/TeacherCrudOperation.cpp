@@ -2,6 +2,7 @@
 #include <iostream>
 #include <sqlite3.h>
 #include <stdexcept>
+#include <string>
 
 using namespace std;
 
@@ -32,7 +33,7 @@ TeacherCrudOperation::~TeacherCrudOperation() { sqlite3_close(db); }
 
 void TeacherCrudOperation::executeSQL(const string &sql) const {
   char *errMsg = nullptr;
-  if (sqlite3_exec(db, sql.c_str(), nullptr, nullptr, &errMsg) != SQLITE_OK) {
+  if (sqlite3_exec(db, sql.c_str(), callback, nullptr, &errMsg) != SQLITE_OK) {
     string error = "SQL error: " + string(errMsg);
     sqlite3_free(errMsg);
     throw runtime_error(error);
@@ -43,35 +44,45 @@ void TeacherCrudOperation::insert(Teacher &data) {
 
   cout << "**** Teachers registration *** \nPlease, enter your info. carefully!"
        << endl;
+  cin.clear();
+
   cout << "name: ";
   string name;
-  getline(cin, name);
+  cin >> name;
+  // getline(cin, name);
   data.setName(name);
+  cin.clear();
 
   cout << "phoneNumber:";
   string phoneNumber;
-  getline(cin, phoneNumber);
+  cin >> phoneNumber;
   data.setPhoneNumber(phoneNumber);
+  cin.clear();
 
   cout << "Email: ";
   string email;
-  getline(cin, email);
+  cin >> email;
   data.setEmail(email);
+  cin.clear();
 
   cout << "age: ";
   int age;
   cin >> age;
   data.setAge(age);
+  cin.clear();
+
+  cout << "Subject: ";
+  string subject;
+  cin >> subject;
+  // getline(cin, subject);
+  data.setSubject(subject);
+  cin.clear();
 
   cout << "resume: ";
   double resume;
   cin >> resume;
   data.setResume(resume);
-
-  cout << "Subject: ";
-  string subject;
-  getline(cin, subject);
-  data.setSubject(subject);
+  cin.clear();
 
   string sql = "INSERT INTO Teachers"
                "(name,phoneNumber,email,age,resume,Subject) VALUES ('" +
@@ -86,7 +97,8 @@ void TeacherCrudOperation::update(int id, Teacher &data) {
   // You can update anything and everything ...
   cout << "Update your name ..." << endl << "New Name:";
   string name;
-  getline(cin, name);
+  cin >> name;
+  // getline(cin, name);
   data.setName(name);
   string sql = "UPDATE Teachers SET name = '" + data.getName() + "'" +
                " WHERE id = " + to_string(id) + ";";
@@ -105,7 +117,7 @@ void TeacherCrudOperation::read(int id) const {
   executeSQL(sql);
 }
 void TeacherCrudOperation::readAll() {
-  string sql = "SELECT * FROM Teahers";
+  string sql = "SELECT * FROM Teachers";
   executeSQL(sql);
 }
 

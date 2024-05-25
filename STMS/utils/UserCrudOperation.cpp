@@ -34,7 +34,7 @@ UserCrudOperation::~UserCrudOperation() { sqlite3_close(db); }
 
 void UserCrudOperation::executeSQL(const string &sql) const {
   char *errMsg = nullptr;
-  if (sqlite3_exec(db, sql.c_str(), nullptr, nullptr, &errMsg) != SQLITE_OK) {
+  if (sqlite3_exec(db, sql.c_str(), callback, nullptr, &errMsg) != SQLITE_OK) {
     string error = "SQL error: " + string(errMsg);
     sqlite3_free(errMsg);
     throw runtime_error(error);
@@ -47,17 +47,20 @@ void UserCrudOperation::insert(User &data) {
        << endl;
   cout << "name: ";
   string name;
-  getline(cin, name);
+  cin >> name;
+  // getline(cin, name);
   data.setUsername(name);
 
   cout << "Password: ";
   string password;
-  getline(cin, password);
+  cin >> password;
+  // getline(cin, password);
   data.setPassword(password);
 
   cout << "Role:['Admin' or 'Guest'] : ";
   string Role;
-  getline(cin, Role);
+  cin >> Role;
+  // getline(cin, Role);
   data.setRole(Role);
 
   string sql = "INSERT INTO Users"
@@ -99,9 +102,8 @@ void UserCrudOperation::readAll() {
 void UserCrudOperation::createTable() {
   const char *sql_create_table =
       "CREATE TABLE IF NOT EXISTS Users ( id INTEGER PRIMARY KEY "
-      "AUTOINCREMENT,username TEXT NOT NULL"
-      "NOT NULL, age INTEGER, phoneNumber TEXT,password TEXT gender "
-      "TEXT,resume "
-      "REAL NOT NULL,Role TEXT NOT NULL CHECK (role IN ('Admin', 'Guest')));";
+      "AUTOINCREMENT,username TEXT"
+      "NOT NULL,password TEXT NOT NULL,"
+      "role TEXT NOT NULL CHECK (role IN ('Admin', 'Guest')));";
   return executeSQL(sql_create_table);
 }
