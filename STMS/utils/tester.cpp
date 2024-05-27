@@ -25,8 +25,8 @@ int main() {
     studentOps->update(1, student);
     teacherOps->update(1, teacher);
 
-    cout << studentOps->read(1) << endl;
-    cout << teacherOps->read(1) << endl;
+    studentOps->read(1);
+    teacherOps->read(1);
 
     studentOps->remove(1);
     teacherOps->remove(1);

@@ -42,17 +42,20 @@ void StudentCrudOperation::insert(Student &data) {
   cout << "Please, enter your info. carefully!" << endl;
   cout << "name:";
   string name;
-  getline(cin, name);
+  cin >> name;
+  // getline(cin, name);
   data.setName(name);
 
   cout << "phoneNumber:";
   string phoneNumber;
-  getline(cin, phoneNumber);
+  cin >> phoneNumber;
+  // getline(cin, phoneNumber);
   data.setPhoneNumber(phoneNumber);
 
   cout << "Email:";
   string email;
-  getline(cin, email);
+  cin >> email;
+  // getline(cin, email);
   data.setEmail(email);
 
   cout << "age:";

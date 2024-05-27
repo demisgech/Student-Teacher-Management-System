@@ -1,5 +1,5 @@
-#include <iostream>
 #include <sqlite3.h>
+#include <stdexcept>
 #include <string>
 
 using namespace std;
@@ -13,8 +13,7 @@ string authenticateUser(sqlite3 *db, const string &username,
   // Prepare the SQL statement
   int rc = sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
   if (rc != SQLITE_OK) {
-    cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << endl;
-    return role;
+    throw runtime_error{sqlite3_errmsg(db)};
   }
 
   // Bind the username and password parameters
@@ -27,7 +26,7 @@ string authenticateUser(sqlite3 *db, const string &username,
     // Column index 0 refers to the first column in the result set
     role = reinterpret_cast<const char *>(sqlite3_column_text(stmt, 0));
   } else if (rc != SQLITE_DONE) {
-    cerr << "Failed to execute statement: " << sqlite3_errmsg(db) << endl;
+    throw runtime_error{sqlite3_errmsg(db)};
   }
 
   // Finalize the statement to release resources
