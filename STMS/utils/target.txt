@@ -76,6 +76,7 @@ Choice: 2
 1. Student
 2. Teacher
 choice: 2
+id      name    age     phoneNumber     email   resume  Subject
 8       Eleni   30      980876765       eleni@gmail.com 3.5     C++
 
 Would you like to do again? [Y(yes)/N(no)]: Y
