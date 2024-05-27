@@ -42,7 +42,8 @@ void TeacherCrudOperation::executeSQL(const string &sql) const {
 
 void TeacherCrudOperation::insert(Teacher &data) {
 
-  cout << "**** Teachers registration *** \nPlease, enter your info. carefully!"
+  cout << "**** Welcome to register a Teacher *** \nPlease, enter your info. "
+          "carefully!"
        << endl;
   cin.clear();
 
@@ -90,12 +91,12 @@ void TeacherCrudOperation::insert(Teacher &data) {
                data.getEmail() + "','" + to_string(data.getAge()) + "','" +
                to_string(data.getResume()) + "','" + data.getSubject() + "');";
   executeSQL(sql);
-  cout << "Data Successfully Inserted!!!" << endl;
+  cout << endl << "Successfully registered!!!" << endl;
 }
 
 void TeacherCrudOperation::update(int id, Teacher &data) {
   // You can update anything and everything ...
-  cout << "Update your name ..." << endl << "New Name:";
+  cout << endl << "*** Name updating ... ****" << endl << "New Name:";
   string name;
   cin >> name;
   // getline(cin, name);
@@ -103,13 +104,13 @@ void TeacherCrudOperation::update(int id, Teacher &data) {
   string sql = "UPDATE Teachers SET name = '" + data.getName() + "'" +
                " WHERE id = " + to_string(id) + ";";
   executeSQL(sql);
-  cout << "Data Successfuly Updated!!!" << endl;
+  cout << "Successfuly Updated!!!" << endl;
 }
 
 void TeacherCrudOperation::remove(int id) {
   string sql = "DELETE FROM Teachers WHERE id = " + to_string(id) + ";";
   executeSQL(sql);
-  cout << "Record successfully deleted!!!" << endl;
+  cout << endl << "Successfully deleted!!!" << endl;
 }
 
 void TeacherCrudOperation::read(int id) const {

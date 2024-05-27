@@ -39,6 +39,7 @@ void StudentCrudOperation::executeSQL(const string &sql) const {
 }
 
 void StudentCrudOperation::insert(Student &data) {
+  cout << endl << "**** Welcome to register a Student ****" << endl;
   cout << "Please, enter your info. carefully!" << endl;
   cout << "name:";
   string name;
@@ -74,25 +75,25 @@ void StudentCrudOperation::insert(Student &data) {
                data.getEmail() + "','" + to_string(data.getAge()) + "','" +
                to_string(data.getCGPA()) + "');";
   executeSQL(sql);
-  cout << "Data Successfully Inserted!!!" << endl;
+  cout << endl << "Successfully registered!!!" << endl;
 }
 
 void StudentCrudOperation::update(int id, Student &data) {
   // You can update anything and everything ...
-  cout << "Update your name ..." << endl << "New Name:";
+  cout << endl << "**** Name updating ... ****" << endl << "New Name:";
   string name;
   getline(cin, name);
   data.setName(name);
   string sql = "UPDATE Students SET name = " + data.getName() +
                " WHERE id = " + to_string(id) + ";";
   executeSQL(sql);
-  cout << "Data Successfuly Updated!!!" << endl;
+  cout << "Successfuly Updated!!!" << endl;
 }
 
 void StudentCrudOperation::remove(int id) {
   string sql = "DELETE FROM Students WHERE id = " + to_string(id) + ";";
   executeSQL(sql);
-  cout << "Record successfully deleted!!!" << endl;
+  cout << endl << "Successfully deleted!!!" << endl;
 }
 
 void StudentCrudOperation::read(int id) const {
