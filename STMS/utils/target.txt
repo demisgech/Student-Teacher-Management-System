@@ -1,33 +1,89 @@
- /*
-    1. signup
 
-    2. login
-        AS 1. admin
-                1. delete
-                    1. students
-                    2. teachers
-                2. update
-                    1. students
-                    2. teachers
-                3. read
-                    1. students
-                    2. teachers
-                4. search
-                    1. students
-                    2. teachers
-                5. insert
-                    1. students
-                    2. teachers
-                6. logout
-        AS 2. Guest
-                1. read
-                    1. students
-                    2. teachers
-                2. search
-                    1. students
-                    2. teachers
-                3. update
-                    1. user
-                4. logout
+ ******@@@@@@@@@@@@@@@@@******
+*                           *
+*       WELCOME TO          *
+*     STUDENT TEACHER       *
+*  MANAGEMENT SYSTEM (STMS) *
+*                           *
+******@@@@@@@@@@@@@@@@*******
+1. SignUp
+2. Login
+Choice: 1
+**** Welcome to create account!! *** 
+Please, enter your info. carefully!  
+name: Markos
+Password: Markos
+Role:['Admin' or 'Guest'] : Guest
 
-    */
+Account successfully created!!!
+
+Would you like to continue? [Y(yes)/N(no)]:Y
+1. SignUp
+2. Login
+Choice: 2
+Username: Markos
+Password: Markos
+
+Logged in successfully as: Guest
+1. View
+2. Search
+3. Update
+4. Logout
+
+Choice: 1
+1. Student
+2. Teacher
+choice: 1
+id      name    age     phoneNumber     email   cgpa
+8       Demis   21      919729737       demis@gmail.com 3.5
+
+Would you like to do again? [Y(yes)/N(no)]: N
+
+Thank you for using out app!!
+
+// Second Run
+1. SignUp
+2. Login
+Choice: 1
+**** Welcome to create account!! *** 
+Please, enter your info. carefully!  
+name: John
+Password: John
+Role:['Admin' or 'Guest'] : Admin
+
+Account successfully created!!!
+
+Would you like to continue? [Y(yes)/N(no)]: Y
+1. SignUp
+2. Login
+Choice: 2
+Username: John
+Password: John
+
+Logged in successfully as: Admin
+1. Manage User
+2. Take Attendance
+3. Manage Student GPA
+4. Logout
+Choice: 1
+1. Register
+2. View
+3. Update
+4. Search
+5. Delete
+6. Logout
+Choice: 2
+1. Student
+2. Teacher
+choice: 2
+8       Eleni   30      980876765       eleni@gmail.com 3.5     C++
+
+Would you like to do again? [Y(yes)/N(no)]: Y
+
+Logged in successfully as: Admin
+1. Manage User
+2. Take Attendance
+3. Manage Student GPA
+4. Logout
+Choice: 4
+Successfully logged out!!!
