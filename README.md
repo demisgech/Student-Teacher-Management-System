@@ -57,12 +57,12 @@ g++ -o management_system tester.cpp -l sqlite3 | (g++ -o management_system teste
     ├──utils
        ├── ...
        ├── ...
-├── tester.cpp        # Main application logic
+├── tester.cpp        # Main file
 ├── README.md       # Project documentation
 └── ...
 ```
 ## Database Schema
-!. **Students Table**
+1. **Students Table**
 ```sql
  CREATE TABLE Students (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
