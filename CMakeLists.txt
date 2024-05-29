@@ -17,7 +17,6 @@ STMS/utils/Teacher.cpp
 STMS/utils/Student.cpp 
 STMS/utils/Person.cpp 
 STMS/utils/User.cpp 
-
-source/sqlite3.h)
+)
 
 target_link_libraries(excute PRIVATE sqlite3)

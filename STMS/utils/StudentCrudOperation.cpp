@@ -82,10 +82,11 @@ void StudentCrudOperation::update(int id, Student &data) {
   // You can update anything and everything ...
   cout << endl << "**** Name updating ... ****" << endl << "New Name:";
   string name;
-  getline(cin, name);
+  cin >> name;
+  // getline(cin, name);
   data.setName(name);
-  string sql = "UPDATE Students SET name = " + data.getName() +
-               " WHERE id = " + to_string(id) + ";";
+  string sql = "UPDATE Students SET name = '" + data.getName() +
+               "' WHERE id = " + to_string(id) + ";";
   executeSQL(sql);
   cout << "Successfuly Updated!!!" << endl;
 }

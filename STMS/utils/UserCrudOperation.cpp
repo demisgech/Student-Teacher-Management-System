@@ -76,7 +76,8 @@ void UserCrudOperation::update(int id, User &data) {
   // You can update anything and everything ...
   cout << endl << "***** Username Updating ... *****" << endl << "New Name:";
   string name;
-  getline(cin, name);
+  cin >> name;
+  // getline(cin, name);
   data.setUsername(name);
 
   string sql = "UPDATE Teachers SET name = '" + data.getUsername() + "'" +
