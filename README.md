@@ -1,19 +1,21 @@
-# C++ with SQLite3 database (Student Teacher Management System
+# C++ with SQLite3 database (Student Teacher Management System(STMS))
 
 Welcome to the Student Teacher Management System! This application is designed to manage student and teacher information using C++ and SQLite3. The system provides CRUD (Create, Read, Update, Delete) operations for managing data. There are two types of users: Admin and Guest, each with different levels of access and capabilities.
 
 ## Features
-- **Admin User**:
+**Admin User**:
 - Full access to all CRUD operations.
 - Can manage student and teacher records.
 - Can view, add, update, and delete information.
-- **Guest User**:
+
+ **Guest User**:
 - Limited access to read operations.
 - Can view student and teacher records.
 - Cannot modify any information.
 ## Prerequisites
 - C++ compiler
 - SQLite3 library
+- CMake build tool
 ## Installation
 1. **Clone the repository**
 ```bash
@@ -23,8 +25,9 @@ cd student-teacher-management
 
 2. **Install SQLite3**
 - Follow the instructions for your operating system to install SQLite3.
-
-3. **Compile the application**
+3. **Install CMake**
+- Follow the instructions for your operating system to install CMake.
+4. **Compile the application**
 ```
 g++ -o management_system tester.cpp -l sqlite3 | (g++ -o management_system tester.cpp sqlite3.dll)
 ```
@@ -50,12 +53,11 @@ g++ -o management_system tester.cpp -l sqlite3 | (g++ -o management_system teste
 ```bash
 
 .├── STMS
-    ├── skin 
+    ├── database 
     ├──utils
        ├── ...
        ├── ...
 ├── tester.cpp        # Main application logic
-├── Shools.db        # SQLite3 database file
 ├── README.md       # Project documentation
 └── ...
 ```
@@ -124,7 +126,7 @@ CREATE TABLE Users (
 );
 ```
 ## C++ code Structure
-1. **DatabaseCrudOperation**
+1. **DatabaseCrudOperation.h**
 ```cpp
 #ifndef DATABASECRUDOPERATION_H
 #define DATABASECRUDOPERATION_H
@@ -145,7 +147,7 @@ public:
 #endif // DATABASECRUDOPERATION_H
 
 ```
-2. **StudentCrudOperation**
+2. **StudentCrudOperation.h**
 ```cpp
 #ifndef STUDENTCRUDOPERATION_H
 #define STUDENTCRUDOPERATION_H
@@ -174,7 +176,7 @@ private:
 
 #endif // STUDENTCRUDOPERATION_H
 ```
-3. **TeacherCrudOperation**
+3. **TeacherCrudOperation.h**
 ```cpp
 #ifndef TEACHERCRUDOPERATION_H
 #define TEACHERCRUDOPERATION_H
