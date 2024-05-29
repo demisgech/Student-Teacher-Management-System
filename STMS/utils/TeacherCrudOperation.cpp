@@ -25,11 +25,16 @@ static int callback(void *data, int argc, char **argv, char **azColName) {
 
 TeacherCrudOperation::TeacherCrudOperation(const string &dbPath) {
   if (sqlite3_open(dbPath.c_str(), &db)) {
-    throw runtime_error("Can't open database: " + string(sqlite3_errmsg(db)));
+    string errorMsg = "Can't open database: " + string(sqlite3_errmsg(db));
+    sqlite3_close(db);
+    throw runtime_error(errorMsg);
   }
 }
 
-TeacherCrudOperation::~TeacherCrudOperation() { sqlite3_close(db); }
+TeacherCrudOperation::~TeacherCrudOperation() {
+  if (db)
+    sqlite3_close(db);
+}
 
 void TeacherCrudOperation::executeSQL(const string &sql) const {
   char *errMsg = nullptr;
