@@ -19,7 +19,7 @@ Welcome to the Student Teacher Management System! This application is designed t
 ## Installation
 1. **Clone the repository**
 ```bash
-git clone https://github.com/demisgech/student-teacher-management.git
+git clone https://github.com/demisgech/Student-Teacher-Management-System.git
 cd student-teacher-management
 ```
 
