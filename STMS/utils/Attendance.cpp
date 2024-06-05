@@ -7,9 +7,6 @@
 #include <string>
 using namespace std;
 
-Attendance::Attendance() {}
-
-Attendance::~Attendance() {}
 
 void Attendance::setId(int id) { this->id = id; }
 

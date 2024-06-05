@@ -5,9 +5,6 @@
 
 using namespace std;
 
-GradePointAverage::GradePointAverage() {}
-GradePointAverage::~GradePointAverage() {}
-
 void GradePointAverage::setGpaId(int gpaId) { this->gpaId = gpaId; }
 int GradePointAverage::getGpaId() { return gpaId; }
 
